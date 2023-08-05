@@ -130,13 +130,17 @@ def count_change(total):
     True
     """
     "*** YOUR CODE HERE ***"
-    if total==0:
-        return 1
-    # 2 0 1 1
-    count = 0 
-    for i in range(0, total):
-        count += i+count_change(total-i)
-    return count
+    def change_helper(total, max_coin):
+        if total == 0:
+            return 1
+        if total < 0:
+            return 0
+        if max_coin == 0:
+            return 0
+        return change_helper(total - max_coin, max_coin) + change_helper(total, max_coin // 2) 
+    return change_helper(total, 2 ** (total.bit_length() - 1))
+        
+
 def print_move(origin, destination):
     """Print instructions to move a disk."""
     print("Move the top disk from rod", origin, "to rod", destination)
@@ -171,7 +175,18 @@ def move_stack(n, start, end):
     """
     assert 1 <= start <= 3 and 1 <= end <= 3 and start != end, "Bad start/end"
     "*** YOUR CODE HERE ***"
+    # base case
+    if n==1:
+        print_move(start,end)
+    # recursive case
+    else:
+        # 考虑辅助柱子的变化，对于2来说，辅助柱子是3，对于3来说，辅助柱子是2
+        move_stack(n-1,start,6-start-end)
+        move_stack(1,start,end)
+        move_stack(n-1,6-start-end,end)
 
+        
+    
 
 from operator import sub, mul
 
@@ -186,4 +201,4 @@ def make_anonymous_factorial():
     >>> check(HW_SOURCE_FILE, 'make_anonymous_factorial', ['Assign', 'AugAssign', 'FunctionDef', 'Recursion'])
     True
     """
-    return 'YOUR_EXPRESSION_HERE'
+    return (lambda f: lambda k: f(f, k))(lambda f, k: k if k == 1 else mul(k, f(f, sub(k, 1))))
