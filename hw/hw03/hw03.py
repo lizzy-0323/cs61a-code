@@ -189,7 +189,7 @@ def move_stack(n, start, end):
     
 
 from operator import sub, mul
-
+    
 
 def make_anonymous_factorial():
     """Return the value of an expression that computes factorial.
