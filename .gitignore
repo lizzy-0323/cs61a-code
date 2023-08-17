@@ -2,4 +2,5 @@
 *.pyc
 *.db
 *.ok_history
+*.DS_Store
 */__pycache__
