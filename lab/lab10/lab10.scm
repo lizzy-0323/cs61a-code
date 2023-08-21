@@ -1,5 +1,10 @@
 (define (over-or-under num1 num2)
   'YOUR-CODE-HERE
+  (if (> num1 num2)
+    1
+    (if (< num1 num2)
+      -1
+      0))
 )
 
 ;;; Tests
@@ -13,6 +18,14 @@
 
 (define (filter-lst fn lst)
   'YOUR-CODE-HERE
+  ; 对lst中每个元素应用fn
+  ; 如果fn返回true，就把这个元素加到结果列表中
+  ; 否则，就不加
+  (if (null? lst)
+    nil
+    (if (fn (car lst))
+      (cons (car lst) (filter-lst fn (cdr lst)))
+      (filter-lst fn (cdr lst))))
 )
 
 ;;; Tests
@@ -24,6 +37,7 @@
 
 (define (make-adder num)
   'YOUR-CODE-HERE
+  (lambda (x) (+ num x))
 )
 
 ;;; Tests
@@ -32,18 +46,22 @@
 ; expect 13
 
 
-(define lst
-  'YOUR-CODE-HERE
+(define lst 
+  (cons (cons 1 nil)
+        (cons 2 (cons (cons 3 (cons 4 nil))
+                      (cons 5 nil))))
 )
 
 
 (define (composed f g)
   'YOUR-CODE-HERE
+  (lambda (x) (f (g x)))
 )
 
 
 (define (remove item lst)
   'YOUR-CODE-HERE
+  (filter-lst ((lambda (= item) lst)))
 )
 
 
@@ -57,16 +75,36 @@
 
 
 (define (no-repeats s)
-  'YOUR-CODE-HERE
+    (if (null? s) nil
+        (cons (car s)
+            (no-repeats (filter-lst (lambda (x) (not (= x (car s)))) (cdr s)))
+        )
+    )
 )
+
+(display (no-repeats (list 5 4 5 4 2 2))) ; Output: (5 4 2)
+
+
+
+
 
 
 (define (substitute s old new)
   'YOUR-CODE-HERE
+    (cond 
+        ((null? s)  nil)
+        ((pair? (car s)) (cons (substitute (car s) old new) (substitute (cdr s) old new)))
+        ((equal? (car s) old) (cons new (substitute (cdr s) old new)))
+        (else (cons (car s) (substitute (cdr s) old new)))
+    )
 )
 
 
 (define (sub-all s olds news)
-  'YOUR-CODE-HERE
+    (if (null? olds) s
+        (sub-all (substitute s (car olds) (car news)) (cdr olds) (cdr news))
+    )
 )
+
+
 
