@@ -45,11 +45,15 @@ CREATE TABLE sentences AS
 
 
 -- Ways to stack 4 dogs to a height of at least 170, ordered by total height
-CREATE TABLE stacks_helper(dogs, stack_height, last_height, n);
-
+CREATE TABLE stacks_helper(dog, stack_height, last_height);
+CREATE TABLE stacks_helper2(dog1,dog2,stack_height,last_height);
+CREATE TABLE stacks_helper3(dog1,dog2,dog3,stack_height,last_height);
+CREATE TABLE stacks_helper4(dog1,dog2,dog3,dog4,stack_height,last_height);
 -- Add your INSERT INTOs here
-
-
+INSERT INTO stacks_helper SELECT NAME,HEIGHT,HEIGHT FROM DOGS;
+INSERT INTO stacks_helper2 SELECT S1.DOG,S2.DOG,S1.LAST_HEIGHT+S2.LAST_HEIGHT,S2.LAST_HEIGHT FROM stacks_helper AS S1,stacks_helper AS S2 WHERE S1.DOG!=S2.DOG AND S1.last_height<S2.last_height;
+INSERT INTO stacks_helper3 SELECT S1.DOG1,S1.DOG2,S2.DOG,S1.STACK_HEIGHT+S2.LAST_HEIGHT,S2.LAST_HEIGHT FROM stacks_helper2 AS S1,stacks_helper AS S2 WHERE S1.DOG2!=S2.DOG AND S1.LAST_HEIGHT<S2.LAST_HEIGHT;
+INSERT INTO stacks_helper4 SELECT S1.DOG1,S1.DOG2,S1.DOG3,S2.DOG,S1.STACK_HEIGHT+S2.LAST_HEIGHT, S2.LAST_HEIGHT FROM stacks_helper3 AS S1,stacks_helper AS S2 WHERE S1.DOG3!=S2.DOG AND S1.LAST_HEIGHT<S2.LAST_HEIGHT;
 CREATE TABLE stacks AS
-  SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
+SELECT DOG1 || ", " || DOG2 || ", " || DOG3 || ", " || DOG4, stack_height FROM stacks_helper4 WHERE STACK_HEIGHT>=170 ORDER BY stack_height;
 
