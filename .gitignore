@@ -1,6 +1,7 @@
 *.log
 *.pyc
 *.db
+*.zip
 *.ok_history
 *.DS_Store
 */__pycache__
